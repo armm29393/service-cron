@@ -1,0 +1,10 @@
+{
+  "title": "Script Title",
+  "cron": "* * * * *",
+  "services": [
+    {
+      "name": "test",
+      "url": "http://test.local/"
+    }
+  ]
+}
