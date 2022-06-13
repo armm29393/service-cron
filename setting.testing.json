@@ -8,7 +8,7 @@
       "backupDir": [
         "./testing"
       ],
-      "deleteBackupAfterSuccess": true
+      "deleteBackupAfterSuccess": false
     }
   ]
 }
