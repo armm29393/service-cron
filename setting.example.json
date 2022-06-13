@@ -4,7 +4,11 @@
   "services": [
     {
       "name": "test",
-      "url": "http://test.local/"
+      "url": "http://test.local/",
+      "backupDir": [
+        "/path/to/backup"
+      ],
+      "deleteBackupAfterSuccess": true
     }
   ]
 }
