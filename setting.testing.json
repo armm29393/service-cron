@@ -1,0 +1,14 @@
+{
+  "title": "Testing",
+  "cron": "* * * * *",
+  "services": [
+    {
+      "name": "test",
+      "url": "https://jsonplaceholder.typicode.com/todos/1",
+      "backupDir": [
+        "./testing"
+      ],
+      "deleteBackupAfterSuccess": true
+    }
+  ]
+}
