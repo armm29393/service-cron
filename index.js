@@ -33,7 +33,7 @@ const updateContent = async (service) => {
         console.log('Error! Try Again..')
         count += 1
         // Restore if failed
-        if (backupDir.length > 0) {
+        if (backupDir?.length > 0) {
           for await (const src of backupDir) {
             const dst = `${src}-backup`
             fs.copySync(dst, src, { overwrite: true })
@@ -43,7 +43,7 @@ const updateContent = async (service) => {
       }
     } while (isError);
     // Delete backup when success
-    if (deleteBackupAfterSuccess && backupDir.length > 0) {
+    if (deleteBackupAfterSuccess && backupDir?.length > 0) {
       for await (const src of backupDir) {
         const dst = `${src}-backup`
         fs.removeSync(dst)
