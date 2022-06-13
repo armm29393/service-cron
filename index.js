@@ -35,8 +35,7 @@ const updateContent = async (service) => {
         // Restore if failed
         if (backupDir?.length > 0) {
           for await (const src of backupDir) {
-            const dst = `${src}-backup`
-            fs.copySync(dst, src, { overwrite: true })
+            fs.copySync(`${src}-backup`, src, { overwrite: true })
           }
         }
         await sleep(5000)
@@ -45,8 +44,7 @@ const updateContent = async (service) => {
     // Delete backup when success
     if (deleteBackupAfterSuccess && backupDir?.length > 0) {
       for await (const src of backupDir) {
-        const dst = `${src}-backup`
-        fs.removeSync(dst)
+        fs.removeSync(`${src}-backup`)
       }
     }
     return result.data
