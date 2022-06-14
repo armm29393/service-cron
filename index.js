@@ -17,13 +17,7 @@ const updateContent = async (service) => {
     let isError = true
     let result
     // Backup before call service
-    if (backupDir?.length > 0) {
-      for await (const src of backupDir) {
-        const dst = `${src}-backup`
-        fs.removeSync(dst)
-        fs.copySync(src, dst, { overwrite: true })
-      }
-    }
+    if (backupDir?.length > 0) await handleUpdate('backup', backupDir)
     do {
       try {
         console.log(`Run ${name} #${count} : Running...`)
@@ -33,23 +27,29 @@ const updateContent = async (service) => {
         console.log('Error! Try Again..')
         count += 1
         // Restore if failed
-        if (backupDir?.length > 0) {
-          for await (const src of backupDir) {
-            fs.copySync(`${src}-backup`, src, { overwrite: true })
-          }
-        }
+        if (backupDir?.length > 0) await handleUpdate('delete', backupDir)
         await sleep(5000)
       }
     } while (isError);
     // Delete backup when success
-    if (deleteBackupAfterSuccess && backupDir?.length > 0) {
-      for await (const src of backupDir) {
-        fs.removeSync(`${src}-backup`)
-      }
-    }
+    if (deleteBackupAfterSuccess && backupDir?.length > 0) await handleUpdate('delete', backupDir)
     return result.data
   } catch (err) {
     console.error(err);
+  }
+}
+
+const handleUpdate = async (action, backupDir) => {
+  for await (const src of backupDir) {
+    const dst = `${src}-backup`
+    if (action == 'backup') {
+      fs.removeSync(dst)
+      fs.copySync(src, dst, { overwrite: true })
+    } else if (action == 'restore') {
+      fs.copySync(dst, src, { overwrite: true })
+    } else if (action == 'delete') {
+      fs.removeSync(dst)
+    }
   }
 }
 
