@@ -1,18 +1,19 @@
 import childProcess from 'child_process';
 import cron from 'node-cron';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { readFile } from 'fs/promises';
 const setting = JSON.parse(await readFile("setting.json", "utf8"));
 
 const mainScript = './index.js'
 const cronJob = setting?.cron
+const nowTime = () => moment().tz('Asia/Bangkok').format('YYYY-MM-DD HH:mm:ss')
 
 const job = cron.schedule(cronJob, () => {
   job.stop()
-  console.log('Run job at', moment().format('YYYY-MM-DD HH:mm:ss'))
+  console.log('Run job at', nowTime())
   runScript(mainScript, function (err) {
     if (err) throw err;
-    console.log('Finished job at', moment().format('YYYY-MM-DD HH:mm:ss'))
+    console.log('Finished job at', nowTime())
     job.start()
   });
 }, {
