@@ -27,7 +27,7 @@ const updateContent = async (service) => {
         console.log('Error! Try Again..')
         count += 1
         // Restore if failed
-        if (backupDir?.length > 0) await handleUpdate('delete', backupDir)
+        if (backupDir?.length > 0) await handleUpdate('restore', backupDir)
         await sleep(5000)
       }
     } while (isError);
@@ -43,11 +43,14 @@ const handleUpdate = async (action, backupDir) => {
   for await (const src of backupDir) {
     const dst = `${src}-backup`
     if (action == 'backup') {
+      console.log(`Backup.. ${src}`)
       fs.removeSync(dst)
       fs.copySync(src, dst, { overwrite: true })
     } else if (action == 'restore') {
+      console.log(`Restore.. ${src}`)
       fs.copySync(dst, src, { overwrite: true })
     } else if (action == 'delete') {
+      console.log(`Delete.. ${src}`)
       fs.removeSync(dst)
     }
   }
