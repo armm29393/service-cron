@@ -40,19 +40,23 @@ const updateContent = async (service) => {
 }
 
 const handleUpdate = async (action, backupDir) => {
-  for await (const src of backupDir) {
-    const dst = `${src}-backup`
-    if (action == 'backup') {
-      console.log(`Backup.. ${src}`)
-      fs.removeSync(dst)
-      fs.copySync(src, dst, { overwrite: true })
-    } else if (action == 'restore') {
-      console.log(`Restore.. ${src}`)
-      fs.copySync(dst, src, { overwrite: true })
-    } else if (action == 'delete') {
-      console.log(`Delete.. ${src}`)
-      fs.removeSync(dst)
+  try {
+    for await (const src of backupDir) {
+      const dst = `${src}-backup`
+      if (action == 'backup') {
+        console.log(`Backup.. ${src}`)
+        fs.removeSync(dst)
+        fs.copySync(src, dst, { overwrite: true })
+      } else if (action == 'restore') {
+        console.log(`Restore.. ${src}`)
+        fs.copySync(dst, src, { overwrite: true })
+      } else if (action == 'delete') {
+        console.log(`Delete.. ${src}`)
+        fs.removeSync(dst)
+      }
     }
+  } catch (error) {
+    console.error(error)
   }
 }
 
